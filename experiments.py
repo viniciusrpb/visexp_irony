@@ -52,7 +52,7 @@ while True:
         category = [tweetsJustRead[1]]
         
         tweet = tweetpos[0]
-        print(tweet+" "+category[0])
+        #print(tweet+" "+category[0])
         #strnum = str(num)
         #path = 'text2/tweet'+str(strnum)+'.txt';
         
@@ -89,8 +89,8 @@ for i in range(1,len(classes)):
 vectorizer = TfidfVectorizer(norm=None, stop_words="english",max_df=0.95, min_df=2)
 tfidf = vectorizer.fit_transform(tweets)
 
-print(vectorizer.get_feature_names())
-print(tfidf.shape)
+#print(vectorizer.get_feature_names())
+#print(tfidf.shape)
 
 # Le informacoes sobre os dados
 #numberOfInstances = len(tfidf)
@@ -105,12 +105,12 @@ X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.4, random_state=0)
 
 # Set the parameters by cross-validation
-tuned_parameters = [{'kernel': ['rbf'], 'gamma': [1, 2, 0.5, 0.25, 0.1, 1e-2, 1e-3, 1e-4],
+'''tuned_parameters = [{'kernel': ['rbf'], 'gamma': [1, 2, 0.5, 0.25, 0.1, 1e-2, 1e-3, 1e-4],
                      'C': [0.5,1, 1.5, 2, 2.5, 5, 7.5, 10, 12.5, 100, 1000]},
-                    {'kernel': ['linear'], 'C': [0.5, 1, 1.5, 2, 2.5, 3, 5, 10, 100, 1000]}]
+                    {'kernel': ['linear'], 'C': [0.5, 1, 1.5, 2, 2.5, 3, 5, 10, 100, 1000]}]'''
 
 scores = ['f1']
-
+'''
 for score in scores:
     print("# Tuning hyper-parameters for %s" % score)
     print()
@@ -137,9 +137,9 @@ for score in scores:
     print("The scores are computed on the full evaluation set.")
     y_true, y_pred = y_test, clf.predict(X_test)
     print(classification_report(y_true, y_pred))
+'''
 
-
-parameters = {'solver': ['lbfgs','sgd','adam'], 'learning_rate' : ['constant'], 'learning_rate_init' : [0.001,0.01,0.05,0.1,0.25,0.5,0.75,1.0,1.5,2.5,5.0,10.0], 'max_iter': [1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000 ], 'alpha': 10.0 ** -np.arange(1, 10), 'hidden_layer_sizes':np.arange(10, 15), 'random_state':[0,1,2,3,4,5,6,7,8,9]}
+parameters = {'solver': ['sgd'], 'learning_rate' : ['constant'], 'learning_rate_init' : [0.001,0.01,0.05,0.1,0.25,0.5,0.75,1.0,1.5,2.5,5.0,10.0], 'max_iter': [1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000 ], 'alpha': 10.0 ** -np.arange(1, 10), 'hidden_layer_sizes':np.arange(10, 15), 'random_state':[0,1,2,3,4,5,6,7,8,9]}
 
 clf = GridSearchCV(MLPClassifier(), parameters, n_jobs=-1)
 clf.fit(X_train, y_train)
@@ -155,6 +155,8 @@ param_grid = {
     'n_estimators': [50,100,200,300,700],
     'max_features': ['auto', 'sqrt', 'log2']
 }
+
+print("Now, random forest grid search...")
 
 CV_rfc = GridSearchCV(estimator=rfc, param_grid=param_grid)
 CV_rfc.fit(X, y)
